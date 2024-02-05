@@ -94,6 +94,7 @@ export default function DateRange({
       startDate = (value as DateRange).startDate;
       endDate = (value as DateRange).endDate;
     } else if (focusedRangeInternal[1] === 0) {
+      // if we are selecting the start date
       const dayOffset = differenceInCalendarDays(endDate || now, startDate);
 
       const calculateEndDate = () => {
@@ -101,7 +102,8 @@ export default function DateRange({
           return addDays(value as Date, dayOffset);
         }
 
-        if(restrictToFirstRangeLength && focusedRangeIndex != 0) {
+        // if restrictToFirstRangeLength and focusedRangeIndex is not 0, restrict length
+        if (restrictToFirstRangeLength && focusedRangeIndex !== 0) {
           const firstRange = differenceInCalendarDays(ranges[0].endDate || now, ranges[0].startDate);
           return addDays(value as Date, firstRange);
         }
@@ -113,18 +115,22 @@ export default function DateRange({
           return value as Date;
         }
 
-        return (value as Date || now);
-      }
+        return (value as Date) || now;
+      };
 
       startDate = value as Date;
       endDate = calculateEndDate();
       if (maxDate) endDate = min([endDate, maxDate]);
 
-      if(restrictToFirstRangeLength && focusedRangeIndex == 0) {
+      // if restrictToFirstRangeLength and focusedRangeIndex is not 0, skip focusing the end range
+      if (restrictToFirstRangeLength && focusedRangeIndex === 0) {
+        nextFocusRange = [focusedRangeInternal[0], 1];
+      } else if (!restrictToFirstRangeLength) {
         nextFocusRange = [focusedRangeInternal[0], 1];
       }
     } else {
       if (restrictToFirstRangeLength && focusedRangeIndex != 0) {
+        // if restrictToFirstRangeLength and selecting end date of additional range, restrict length
         const firstRange = differenceInCalendarDays(ranges[0].endDate || now, ranges[0].startDate);
         startDate = addDays(value as Date, -firstRange);
         endDate = value as Date;
