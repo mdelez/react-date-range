@@ -14,6 +14,7 @@ export type DateRangeProps = {
   moveRangeOnFirstSelection?: boolean,
   retainEndDateOnFirstSelection?: boolean,
   previewRange?: DateRange,
+  restrictToFirstRangeLength?: boolean,
 } & CalendarProps;
 
 export default function DateRange({
@@ -59,7 +60,8 @@ export default function DateRange({
   onRangeFocusChange,
   color,
   previewRange,
-  preventScrollToFocusedMonth
+  preventScrollToFocusedMonth,
+  restrictToFirstRangeLength
 }: DateRangeProps) {
 
   const refs = React.useRef({
@@ -99,6 +101,11 @@ export default function DateRange({
           return addDays(value as Date, dayOffset);
         }
 
+        if(restrictToFirstRangeLength && focusedRangeIndex != 0) {
+          const firstRange = differenceInCalendarDays(ranges[0].endDate || now, ranges[0].startDate);
+          return addDays(value as Date, firstRange);
+        }
+
         if (retainEndDateOnFirstSelection) {
           if (!endDate || isBefore(value as Date, endDate)) {
             return endDate;
@@ -113,9 +120,17 @@ export default function DateRange({
       endDate = calculateEndDate();
       if (maxDate) endDate = min([endDate, maxDate]);
 
-      nextFocusRange = [focusedRangeInternal[0], 1];
+      if(restrictToFirstRangeLength && focusedRangeIndex == 0) {
+        nextFocusRange = [focusedRangeInternal[0], 1];
+      }
     } else {
-      endDate = value as Date;
+      if (restrictToFirstRangeLength && focusedRangeIndex != 0) {
+        const firstRange = differenceInCalendarDays(ranges[0].endDate || now, ranges[0].startDate);
+        startDate = addDays(value as Date, -firstRange);
+        endDate = value as Date;
+      } else {
+        endDate = value as Date;
+      }
     }
 
     // reverse dates if startDate before endDate

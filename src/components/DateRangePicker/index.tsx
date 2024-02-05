@@ -52,9 +52,9 @@ export default function DateRangePicker({
   monthDisplayFormat,
   months,
   moveRangeOnFirstSelection,
-  preventScrollToFocusedMonth
+  preventScrollToFocusedMonth,
+  restrictToFirstRangeLength
 }: DateRangePickerProps) {
-
   const refs = React.useRef({
     styles: generateStyles([Styles, classNames])
   });
@@ -63,7 +63,6 @@ export default function DateRangePicker({
     focusedRange: [findNextRangeIndex(ranges), 0],
     rangePreview: undefined
   });
-
 
   return (
     <div className={classnames(refs.current.styles.dateRangePickerWrapper, className)}>
@@ -77,7 +76,7 @@ export default function DateRangePicker({
         footerContent={footerContent}
       />
       <DateRange
-        onRangeFocusChange={focusedRange => setState(s => ({...s, focusedRange}))}
+        onRangeFocusChange={(focusedRange) => setState((s) => ({ ...s, focusedRange }))}
         focusedRange={focusedRange || state.focusedRange}
         weekStartsOn={weekStartsOn}
         weekdayDisplayFormat={weekdayDisplayFormat}
@@ -118,8 +117,8 @@ export default function DateRangePicker({
         months={months}
         moveRangeOnFirstSelection={moveRangeOnFirstSelection}
         preventScrollToFocusedMonth={preventScrollToFocusedMonth}
+        restrictToFirstRangeLength={restrictToFirstRangeLength}
       />
     </div>
-  )
-
+  );
 }
