@@ -74,6 +74,7 @@ export default function DateRangePicker({
         renderStaticRangeLabel={renderStaticRangeLabel}
         headerContent={headerContent}
         footerContent={footerContent}
+        restrictToFirstRangeLength={restrictToFirstRangeLength}
       />
       <DateRange
         onRangeFocusChange={(focusedRange) => setState((s) => ({ ...s, focusedRange }))}
