@@ -7,14 +7,14 @@ import { addDays, differenceInCalendarDays, isBefore, isWithinInterval, max, min
 import classnames from 'classnames';
 
 export type DateRangeProps = {
-  onChange: (dateRange: DateRange) => void,
-  onRangeFocusChange?: (range: number[]) => void,
-  className?: string,
-  ranges?: DateRange[],
-  moveRangeOnFirstSelection?: boolean,
-  retainEndDateOnFirstSelection?: boolean,
-  previewRange?: DateRange,
-  restrictToFirstRangeLength?: boolean,
+  onChange: (dateRange: DateRange) => void;
+  onRangeFocusChange?: (range: number[]) => void;
+  className?: string;
+  ranges?: DateRange[];
+  moveRangeOnFirstSelection?: boolean;
+  retainEndDateOnFirstSelection?: boolean;
+  previewRange?: DateRange;
+  restrictToFirstRangeLength?: boolean;
 } & CalendarProps;
 
 export default function DateRange({
@@ -63,7 +63,6 @@ export default function DateRange({
   preventScrollToFocusedMonth,
   restrictToFirstRangeLength
 }: DateRangeProps) {
-
   const refs = React.useRef({
     styles: generateStyles([Styles, classNames])
   });
@@ -74,11 +73,11 @@ export default function DateRange({
   });
 
   React.useEffect(() => {
-    updatePreview(previewRange ? calcNewSelection(previewRange, !previewRange.endDate) : null)
+    updatePreview(previewRange ? calcNewSelection(previewRange, !previewRange.endDate) : null);
   }, [previewRange]);
 
   const calcNewSelection = (value: DateRange | Date, isSingleValue = true) => {
-    const focusedRangeInternal = (focusedRange || state.focusedRange);
+    const focusedRangeInternal = focusedRange || state.focusedRange;
     const focusedRangeIndex = focusedRangeInternal[0];
     const selectedRange = ranges[focusedRangeIndex];
 
@@ -146,10 +145,10 @@ export default function DateRange({
       [startDate, endDate] = [endDate, startDate];
     }
 
-    const inValidDatesWithinRange = disabledDates.filter(disabledDate =>
+    const inValidDatesWithinRange = disabledDates.filter((disabledDate) =>
       isWithinInterval(disabledDate, {
         start: startDate,
-        end: endDate,
+        end: endDate
       })
     );
 
@@ -169,10 +168,9 @@ export default function DateRange({
     return {
       wasValid: !(inValidDatesWithinRange.length > 0),
       range: { startDate, endDate },
-      nextFocusRange: nextFocusRange,
+      nextFocusRange: nextFocusRange
     };
-
-  }
+  };
 
   const setSelection = (value: DateRange | Date, isSingleValue?: boolean) => {
     const focusedRangeIndex = (focusedRange || state.focusedRange)[0];
@@ -185,45 +183,67 @@ export default function DateRange({
     const toChange = {
       [selectedRange.key || `range${focusedRangeIndex + 1}`]: {
         ...selectedRange,
-        ...newSelection.range,
-      },
+        ...newSelection.range
+      }
     };
-    
+
+    if (restrictToFirstRangeLength && focusedRangeIndex === 0) {
+      ranges.slice(focusedRangeIndex + 1).forEach((currentRange, index) => {
+        let currentStartDate = currentRange.startDate;
+        let currentEndDate = currentRange.endDate;
+
+        const daysDifference = differenceInCalendarDays(
+          newSelection.range.endDate,
+          newSelection.range.startDate
+        );
+
+        currentEndDate = addDays(currentStartDate, daysDifference);
+
+        if (isBefore(currentEndDate, currentStartDate)) {
+          [currentStartDate, currentEndDate] = [currentEndDate, currentStartDate];
+        }
+
+        toChange[currentRange.key || `range${focusedRangeIndex + 2 + index}`] = {
+          ...currentRange,
+          startDate: currentStartDate,
+          endDate: currentEndDate
+        };
+      });
+    }
+
     onChange?.(toChange as unknown as DateRange);
 
-    setState(s => ({ ...s, focusedRange: newSelection.nextFocusRange, preview: null }));
+    // set next range as the focusedRange
+    setState((s) => ({ ...s, focusedRange: newSelection.nextFocusRange, preview: null }));
 
     onRangeFocusChange?.(newSelection.nextFocusRange);
-  }
+  };
 
   const handleRangeFocusChange = (focusedRange: number[]) => {
-    setState(s => ({ ...s, focusedRange }));
+    setState((s) => ({ ...s, focusedRange }));
     onRangeFocusChange?.(focusedRange);
-  }
+  };
 
-  const updatePreview = (val?: {
-    wasValid?: boolean,
-    range?: DateRange,
-    nextFocusRange?: number[],
-  }) => {
-
+  // update to allow an array of ranges?
+  const updatePreview = (val?: { wasValid?: boolean; range?: DateRange; nextFocusRange?: number[] }) => {
     if (!val) {
-      setState(s => ({ ...s, preview: null }));
+      setState((s) => ({ ...s, preview: null }));
       return;
     }
 
     const focusedRangeInternal = focusedRange || state.focusedRange;
-    const colorInternal = ranges[focusedRangeInternal[0]]?.color || rangeColors[focusedRangeInternal[0]] || color;
+    const colorInternal =
+      ranges[focusedRangeInternal[0]]?.color || rangeColors[focusedRangeInternal[0]] || color;
 
-    setState((s => ({ ...s, preview: { ...val.range, color: colorInternal } })));
-  }
-  
+    setState((s) => ({ ...s, preview: { ...val.range, color: colorInternal } }));
+  };
+
   return (
     <Calendar
       focusedRange={focusedRange || state.focusedRange}
       onRangeFocusChange={handleRangeFocusChange}
       preview={preview || state.preview}
-      onPreviewChange={value => {
+      onPreviewChange={(value) => {
         updatePreview(value ? calcNewSelection(value) : null);
       }}
       ariaLabels={ariaLabels}
@@ -250,10 +270,10 @@ export default function DateRange({
       fixedHeight={fixedHeight}
       locale={locale}
       calendarFocus={calendarFocus}
-      displayMode='dateRange'
+      displayMode="dateRange"
       className={classnames(refs.current.styles.dateRangeWrapper, className)}
       onChange={setSelection}
-      updateRange={val => setSelection(val, false)}
+      updateRange={(val) => setSelection(val, false)}
       monthDisplayFormat={monthDisplayFormat}
       months={months}
       classNames={classNames}
@@ -266,5 +286,5 @@ export default function DateRange({
       color={color}
       preventScrollToFocusedMonth={preventScrollToFocusedMonth}
     />
-  )
-} 
+  );
+}
