@@ -4,6 +4,7 @@ import styles from '../../styles';
 import { defaultInputRanges, defaultStaticRanges } from '../../defaultRanges';
 import { DateRange } from '../DayCell';
 import InputRangeField from '../InputRangeField';
+import { addDays, differenceInCalendarDays } from 'date-fns';
 
 export type DefinedRangeProps = {
   inputRanges?: {label: string, range: (value: number) => DateRange, getCurrentValue: (range: DateRange) => number | "-" | "∞"}[],
@@ -56,9 +57,28 @@ export default function DefinedRange({
       return;
     }
 
-    onChange({
+    const toChange = {
       [selectedRange.key || `range${focusedRange[0] + 1}`]: { ...selectedRange, ...range }
-    });
+    }
+
+    if (restrictToFirstRangeLength && focusedRange[0] === 0) {
+      const focusedRangeIndex = focusedRange[0];
+      ranges.slice(focusedRangeIndex + 1).forEach((currentRange, index) => {
+        const currentStartDate = currentRange.startDate;
+        let currentEndDate = currentRange.endDate;
+
+        const daysDifference = differenceInCalendarDays(range.endDate, range.startDate);
+        currentEndDate = addDays(currentStartDate, daysDifference); 
+
+        toChange[currentRange.key || `range${focusedRangeIndex + 2 + index}`] = {
+          ...currentRange,
+          startDate: currentStartDate,
+          endDate: currentEndDate
+        };
+      });
+    }
+
+    onChange?.(toChange);
   };
 
   const getRangeOptionValue = (option: DefinedRangeProps['inputRanges'][number]) => {

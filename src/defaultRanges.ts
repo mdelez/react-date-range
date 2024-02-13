@@ -13,7 +13,7 @@ import {
 
 import { DateRange } from './components/DayCell';
 
-const defineds = {
+const definedRanges = {
   startOfWeek: startOfWeek(new Date()),
   endOfWeek: endOfWeek(new Date()),
   startOfLastWeek: startOfWeek(addDays(new Date(), -7)),
@@ -47,44 +47,44 @@ export const defaultStaticRanges = createStaticRanges([
   {
     label: 'Today',
     range: () => ({
-      startDate: defineds.startOfToday,
-      endDate: defineds.endOfToday,
+      startDate: definedRanges.startOfToday,
+      endDate: definedRanges.endOfToday,
     }),
   },
   {
     label: 'Yesterday',
     range: () => ({
-      startDate: defineds.startOfYesterday,
-      endDate: defineds.endOfYesterday,
+      startDate: definedRanges.startOfYesterday,
+      endDate: definedRanges.endOfYesterday,
     }),
   },
 
   {
     label: 'This Week',
     range: () => ({
-      startDate: defineds.startOfWeek,
-      endDate: defineds.endOfWeek,
+      startDate: definedRanges.startOfWeek,
+      endDate: definedRanges.endOfWeek,
     }),
   },
   {
     label: 'Last Week',
     range: () => ({
-      startDate: defineds.startOfLastWeek,
-      endDate: defineds.endOfLastWeek,
+      startDate: definedRanges.startOfLastWeek,
+      endDate: definedRanges.endOfLastWeek,
     }),
   },
   {
     label: 'This Month',
     range: () => ({
-      startDate: defineds.startOfMonth,
-      endDate: defineds.endOfMonth,
+      startDate: definedRanges.startOfMonth,
+      endDate: definedRanges.endOfMonth,
     }),
   },
   {
     label: 'Last Month',
     range: () => ({
-      startDate: defineds.startOfLastMonth,
-      endDate: defineds.endOfLastMonth,
+      startDate: definedRanges.startOfLastMonth,
+      endDate: definedRanges.endOfLastMonth,
     }),
   },
 ]);
@@ -94,14 +94,14 @@ export const defaultInputRanges = [
     label: 'days up to today',
     range(value: number) {
       return {
-        startDate: addDays(defineds.startOfToday, (Math.max(Number(value), 1) - 1) * -1),
-        endDate: defineds.endOfToday,
+        startDate: addDays(definedRanges.startOfToday, (Math.max(Number(value), 1) - 1) * -1),
+        endDate: definedRanges.endOfToday,
       };
     },
     getCurrentValue(range: DateRange) {
-      if (!isSameDay(range.endDate, defineds.endOfToday)) return '-';
+      if (!isSameDay(range.endDate, definedRanges.endOfToday)) return '-';
       if (!range.startDate) return '∞';
-      return differenceInCalendarDays(defineds.endOfToday, range.startDate) + 1;
+      return differenceInCalendarDays(definedRanges.endOfToday, range.startDate) + 1;
     },
   },
   {
@@ -114,9 +114,9 @@ export const defaultInputRanges = [
       };
     },
     getCurrentValue(range: DateRange) {
-      if (!isSameDay(range.startDate, defineds.startOfToday)) return '-';
+      if (!isSameDay(range.startDate, definedRanges.startOfToday)) return '-';
       if (!range.endDate) return '∞';
-      return differenceInCalendarDays(range.endDate, defineds.startOfToday) + 1;
+      return differenceInCalendarDays(range.endDate, definedRanges.startOfToday) + 1;
     },
   },
 ];
