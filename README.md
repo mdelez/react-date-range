@@ -175,52 +175,50 @@ inputRanges(`DefinedRange`, `DateRangePicker`)   | Array            | [default i
 ariaLabels                           | Object    | {}               | inserts aria-label to inner elements
 dayContentRenderer                   | Function  | null             | Function to customize the rendering of Calendar Day. given a date is supposed to return what to render.
 preventScrollToFocusedMonth          | Boolean   | false            | When two or more months are open, prevent the shift of the focused month to the left.
+focusNextRangeOnDefinedRangeClick    | Boolean   | false            | When a defined range is clicked, the next range will be focused
 restrictToFirstRangeLength           | Boolean   | false            | Restrict the length of additional ranges to the length of the first range.
 
- *shape of range:
- ```js
-  {
-    startDate: PropTypes.object,
-    endDate: PropTypes.object,
-    color: PropTypes.string,
-    key: PropTypes.string,
-    autoFocus: PropTypes.bool,
-    disabled: PropTypes.bool,
-    showDateDisplay: PropTypes.bool,
-  }
+#### Type DateRange:
+ ```ts
+type DateRange = {
+  startDate: Date,
+  endDate: Date,
+  color?: string,
+  key?: string,
+  autoFocus?: boolean,
+  disabled?: boolean,
+  showDateDisplay?: boolean,
+  label?: string
+}
 ```
 
- **shape of ariaLabels:
- ```js
-  {
-    // The key of dateInput should be same as key in range.
-    dateInput: PropTypes.objectOf(
-      PropTypes.shape({
-        startDate: PropTypes.string,
-        endDate: PropTypes.string
-      })
-    ),
-    monthPicker: PropTypes.string,
-    yearPicker: PropTypes.string,
-    prevButton: PropTypes.string,
-    nextButton: PropTypes.string,
-  }
+#### Type AriaLabelsType:
+ ```ts
+type AriaLabelsType = {
+  dateInput?: {
+    startDate?: string,
+    endDate?: string
+  },
+  monthPicker?: string,
+  yearPicker?: string,
+  prevButton?: string,
+  nextButton?: string
+}
 ```
 #### Infinite Scrolled Mode
 
 To enable infinite scroll set `scroll={{enabled: true}}` basically. Infinite scroll feature is affected by `direction`(rendering direction for months) and `months`(for rendered months count) props directly.
 If you prefer, you can overwrite calendar sizes with `calendarWidth`/`calendarHeight` or each month's height/width with `monthWidth`/`monthHeight`/`longMonthHeight` at `scroll` prop.
 
-```js
-  // shape of scroll prop
-  scroll: {
-    enabled: PropTypes.bool,
-    monthHeight: PropTypes.number,
-    longMonthHeight: PropTypes.number, // some months has 1 more row than others
-    monthWidth: PropTypes.number, // just used when direction="horizontal"
-    calendarWidth: PropTypes.number, // defaults monthWidth * months
-    calendarHeight: PropTypes.number, // defaults monthHeight * months
-  }),
+```ts
+type Scroll = {
+  enabled?: boolean,
+  monthHeight?: number,
+  longMonthHeight?: number,
+  monthWidth?: number,
+  calendarWidth?: number,
+  calendarHeight?: number
+}
 ```
 
 
