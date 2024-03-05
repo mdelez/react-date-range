@@ -34,11 +34,11 @@ export default function DefinedRange({
   ranges = [],
   focusedRange = [0, 0],
   focusNextRangeOnDefinedRangeClick,
+  restrictToFirstRangeLength,
   onChange,
   onPreviewChange,
   renderStaticRangeLabel,
-  onRangeFocusChange
-  restrictToFirstRangeLength
+  onRangeFocusChange,
 
 }: DefinedRangeProps) {
   const [state, setState] = React.useState({ rangeOffset: 0, focusedInput: -1 });
