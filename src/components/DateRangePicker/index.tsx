@@ -53,7 +53,8 @@ export default function DateRangePicker({
   months,
   moveRangeOnFirstSelection,
   preventScrollToFocusedMonth,
-  focusNextRangeOnDefinedRangeClick
+  focusNextRangeOnDefinedRangeClick,
+  restrictToFirstRangeLength
 }: DateRangePickerProps) {
   const refs = React.useRef({
     styles: generateStyles([Styles, classNames])
@@ -76,6 +77,7 @@ export default function DateRangePicker({
         footerContent={footerContent}
         focusNextRangeOnDefinedRangeClick={focusNextRangeOnDefinedRangeClick}
         onRangeFocusChange={(focusedRange) => setState((s) => ({ ...s, focusedRange }))}
+        restrictToFirstRangeLength={restrictToFirstRangeLength}
       />
       <DateRange
         onRangeFocusChange={(focusedRange) => setState((s) => ({ ...s, focusedRange }))}
@@ -119,6 +121,7 @@ export default function DateRangePicker({
         months={months}
         moveRangeOnFirstSelection={moveRangeOnFirstSelection}
         preventScrollToFocusedMonth={preventScrollToFocusedMonth}
+        restrictToFirstRangeLength={restrictToFirstRangeLength}
       />
     </div>
   );

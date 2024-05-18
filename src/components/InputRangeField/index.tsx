@@ -4,17 +4,18 @@ const MIN = 0;
 const MAX = 99999;
 
 type InputRangeFieldProps = {
-  value?: string | number,
+  value?: string | number;
   styles: {
-    inputRange: string,
-    inputRangeInput: string,
-    inputRangeLabel?: string
-  },
-  placeholder?: string,
-  label: ReactElement | ReactNode,
-  onChange: (value: number) => void,
-  onBlur: (event: FocusEvent<HTMLInputElement>) => void,
-  onFocus: (event: FocusEvent<HTMLInputElement>) => void
+    inputRange: string;
+    inputRangeInput: string;
+    inputRangeLabel?: string;
+  };
+  placeholder?: string;
+  label: ReactElement | ReactNode;
+  inputDisabled?: boolean;
+  onChange: (value: number) => void;
+  onBlur: (event: FocusEvent<HTMLInputElement>) => void;
+  onFocus: (event: FocusEvent<HTMLInputElement>) => void;
 };
 
 export default function InputRangeField({
@@ -22,6 +23,7 @@ export default function InputRangeField({
   placeholder = '-',
   value = '',
   label,
+  inputDisabled,
   onChange,
   onBlur,
   onFocus
@@ -45,6 +47,7 @@ export default function InputRangeField({
       onChange={onChangeInternal}
       onBlur={onBlur}
       onFocus={onFocus}
+      disabled={inputDisabled}
       />
       <span className={styles.inputRangeLabel}>{label}</span>
     </div>

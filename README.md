@@ -175,7 +175,8 @@ inputRanges(`DefinedRange`, `DateRangePicker`)   | Array            | [default i
 ariaLabels                           | Object    | {}               | inserts aria-label to inner elements
 dayContentRenderer                   | Function  | null             | Function to customize the rendering of Calendar Day. given a date is supposed to return what to render.
 preventScrollToFocusedMonth          | Boolean   | false            | When two or more months are open, prevent the shift of the focused month to the left.
-focusNextRangeOnDefinedRangeClick    | Boolean  | false            | When a defined range is clicked, the next range will be focused
+focusNextRangeOnDefinedRangeClick    | Boolean   | false            | When a defined range is clicked, the next range will be focused
+restrictToFirstRangeLength           | Boolean   | false            | Restrict the length of additional ranges to the length of the first range.
 
 #### Type DateRange:
  ```ts

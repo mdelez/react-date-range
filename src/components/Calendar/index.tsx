@@ -44,7 +44,7 @@ export type CalendarProps = {
   className?: string,
   showDateDisplay?: boolean,
   showPreview?: boolean,
-  displayMode?: "dateRange" | "date",
+  displayMode?: 'dateRange' | 'date',
   color?: string,
   updateRange?: (range: DateRange) => void,
   scroll?: {
@@ -62,7 +62,7 @@ export type CalendarProps = {
   editableDateInputs?: boolean,
   dragSelectionEnabled?: boolean,
   fixedHeight?: boolean,
-  calendarFocus?: "forwards" | "backwards",
+  calendarFocus?: 'forwards' | 'backwards',
   preventSnapRefocus?: boolean,
   ariaLabels?: AriaLabelsType,
   preventScrollToFocusedMonth?: boolean
